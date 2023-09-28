@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: drf_app
+    volumes:
+      - ./src:/drf
+    ports:
+      - "9090:8000"

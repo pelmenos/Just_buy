@@ -1,0 +1,389 @@
+{
+	"info": {
+		"_postman_id": "d30ac33e-8300-435f-b566-3d2e56718b85",
+		"name": "Just buy",
+		"description": "Документация запросов на API для \"Просто купить\".\n\nОбщие ошибки при работе с запросами выглядят так:\n\nПри попытке доступа к защищённым авторизацией запросам\n\nstatus: 403\n\n``` json\n{\n   “message”: “Login failed”\n}\n\n ```\n\nПри попытке доступа авторизованных пользователей к недоступных для них запросов\n\nstatus: 403\n\n``` json\n{\n   “message”: “Forbidden for you”\n}\n\n ```\n\nПри попытке получить несуществующий ресурс\n\nstatus: 404\n\n``` json\n{\n    \"message\": \"Not found\"\n}\n\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24124807"
+	},
+	"item": [
+		{
+			"name": "Authenticated",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/signup/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"signup",
+								""
+							]
+						},
+						"description": "## **Регистрация пользователя**\n\n`POST /signup` регистрирует пользователя с переданными данными и возращает токен пользователя.\n\nПример данных при отправке запроса:\n\n``` json\n{\n\"email\": \"user@shop.ru\",\n\"fio\": \"Ivanov Ivan Ivanovich\",\n\"password\": \"QWEasd123\"\n}\n\n ```\n\nПример ответа:\n\n``` json\n{\n\"user_token\": \"726e9467e712ec2afc0654e6e05d155a23366464ace48a083cd37d17ae622ac0\"\n}\n\n ```\n\n| Имя | **Тип** | Описание |\n| --- | --- | --- |\n| email | string | Email пользователя |\n| fio | string | Полное имя пользователя |\n| password | string | Пароль ползователя |"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"login"
+							]
+						},
+						"description": "## Авторизация пользователя\n\n`POST /login` аторизирует пользователя по указанным данным и возращает токен пользователя.\n\nПример запроса:\n\n``` json\n{\n\"email\": \"user@shop.ru\",\n\"password\": \"QWEasd123\"\n}\n\n ```\n\nПример ответа:\n\n``` json\n{\n\"user_token\":\"d2696e9e01e353d979f5ee7e8571cee6b9aa5550e3296b8b75108d49b6310850\"\n}\n\n ```\n\n| Имя | **Тип** | Описание |\n| --- | --- | --- |\n| email | string | Email пользователя |\n| password | string | Пароль пользователя |"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token  {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/logout",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"logout"
+							]
+						},
+						"description": "## Выход из системы\n\n`Post /logout` очищает токен пользователя. Возвращает сообщение об успешном выходе.\n\n``` json\n{\n    \"message\": \"logout\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Содержит все запросы связанные с аутентификацией пользователя. Аутентификация происходит по токенам."
+		},
+		{
+			"name": "Shop",
+			"item": [
+				{
+					"name": "get_products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/products/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"products",
+								""
+							]
+						},
+						"description": "## Получение списка продуктов\n\n`GET /products` возвращает список продуктов. Не требует авторизации.\n\nПример ответа:\n\n``` json\n[\n    {\n        \"id\": 1,\n        \"name\": \"Lemon\",\n        \"description\": \"Yellow Lemon\",\n        \"price\": 100\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Orange\",\n        \"description\": \"Orange orange\",\n        \"price\": 150\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Apple\",\n        \"description\": \"Green apple\",\n        \"price\": 50\n    }\n]\n\n ```\n\n| **Имя** | **Тип** | **Описание** |\n| --- | --- | --- |\n| id | integer | Уникальный идентификатор продукта |\n| name | string | Название продукта |\n| description | string | Описание продукта |\n| price | integer | Цена за единицу продукта |"
+					},
+					"response": []
+				},
+				{
+					"name": "create_product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/products/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"products",
+								""
+							]
+						},
+						"description": "## Создание продукта\n\n`POST /products` создаёт продукт по заданным данным и возвращает его. Доступно только админам.\n\nПример запроса:\n\n``` json\n{\n\"name\": \"Lemon\",\n\"description\": \"Yellow Lemon\",\n\"price\": 100\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "delete_product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token  {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/products/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"products",
+								"5"
+							]
+						},
+						"description": "## Удаление продукта\n\nDELETE /product/{id} удаляет продукт из списка. Доступно только админам."
+					},
+					"response": []
+				},
+				{
+					"name": "patch_product",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/products/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"products",
+								"3"
+							]
+						},
+						"description": "## Изменение продукта\n\n`PATCH /products/{id}` изменяет данные продукта на переданные. Доступно только админам.\n\nПример запроса:\n\n``` json\n{\n\"price\": 500\n}\n\n ```\n\nПример ответа:\n\n``` json\n{\n\"id\": 3,\n\"name\": \"Apple\",\n\"description\": \"Green apple\",\n\"price\": 500\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get_cart",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token  {user_token}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/cart/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"cart",
+								""
+							]
+						},
+						"description": "## Получение корзины пользователя\n\n`GET /cart` возвращает список products, который содержит продукты, добавленные пользователем.\n\nПример ответа:\n\n``` json\n{\n    \"products\": [\n        {\n            \"id\": 1,\n            \"product_id\": 1,\n            \"name\": \"Lemon\",\n            \"description\": \"Yellow Lemon\",\n            \"price\": 100\n        },\n        {\n            \"id\": 2,\n            \"product_id\": 2,\n            \"name\": \"Orange\",\n            \"description\": \"Orange orange\",\n            \"price\": 150\n        }\n    ]\n}\n ```\n\n| **Имя** | **Тип** | **Описание** |\n| --- | --- | --- |\n| products | array | Содержит добавленные в корзину продукты |\n| id | integer | Идентификатор товара в корзине |\n| product_id | integer | Уникальный идентификатор товара |\n| name | string | Название продукта |\n| description | string | Описание продукта |\n| price | integer | Цена продукта |"
+					},
+					"response": []
+				},
+				{
+					"name": "add_product_to_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token  {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/cart/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"cart",
+								"1"
+							]
+						},
+						"description": "## Добавление товара в корзину\n\n`POST /cart/{id}` добавляет продукт в корзину пользователя по `id` продукта. Возвращает сообщение ою успешном запросе.\n\n``` json\n{\n    \"message\": \"Product add to cart\"\n}\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "delete_product_from_cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/cart/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"cart",
+								"1"
+							]
+						},
+						"description": "## Удаление товара из корзины\n\n`DELETE /cart/{id}` удаляет продукт из корзины пользователя. Возвращает сообщение об успешном удалении.\n\n``` json\n{\n\"message\": \"Item removed from cart\"\n}\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get_order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token  {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/order/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"order",
+								""
+							]
+						},
+						"description": "## Получение заказов\n\n`GET /order` возвращает спиок заказов пользователя.\n\n``` json\n[\n    {\n        \"id\": 1,\n        \"products\": [\n            1,\n            2,\n            3\n        ],\n        \"order_price\": 0\n    },\n    {\n        \"id\": 2,\n        \"products\": [\n            1\n        ],\n        \"order_price\": 100\n    },\n\n]\n ```\n\n| **Имя** | **Тип** | **Описание** |\n| --- | --- | --- |\n| id | integer | Уникальный идентификатор заказа |\n| products | array | Список id продуктов в заказе |\n| order_price | integer | Суммарная стоимость всех продуктов |"
+					},
+					"response": []
+				},
+				{
+					"name": "create_order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {user_token}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api-shop/order/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api-shop",
+								"order",
+								""
+							]
+						},
+						"description": "## Создание заказа\n\n`POST /order` создаёт заказ. Возвращает сообщение о успешном создании заказа вместе с id заказа. Корзина пользователя очищается.\n\n``` json\n{\n    \"order_id\": 1\n     \"message\": \"Order is processed\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Содержит все манипуляции с данными магазина."
+		}
+	]
+}
