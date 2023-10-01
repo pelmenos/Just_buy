@@ -7,7 +7,8 @@
 4. Активируйте его: `venv\Scripts\activate.bat`.
 5. Перейдите в папку project: `cd project`.
 6. Установите зависимости: `pip install -r requirements.txt`.
-7. Запустить код `python manage.py runserver`.
+7. Провести миграции: `python manage.py makemigrations` затем `python manage.py migrate`.
+8. Запустить код `python manage.py runserver`.
 
 В бд уже хранятся некоторые данные: админ и пользователь, с данными указанными в тех. задании, несколько продуктов.
 
@@ -15,7 +16,7 @@
 
 Если нужно создать нового админа: `python manage.py createsuperuser`.
 
-###Запуск с докером
+### Запуск с докером
 1. Клонируйте репозиторий: `https://github.com/pelmenos/Just_buy.git`.
 2. Перейдите в папку project: `cd Just_buy/project`.
 3. Выполните миграции: `docker-compose run web python manage.py migrate`.
