@@ -40,7 +40,9 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-
+    """
+    Serializer for Order
+    """
     class Meta:
         model = Order
         fields = ['id', 'products', 'order_price']
